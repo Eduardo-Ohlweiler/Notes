@@ -38,7 +38,7 @@ class AuthController extends Controller
         //Verifica se o usuário existe
         if(!$user)
             return redirect()->back()->withInput()->with(['loginError' => 'Login ou senha incorreto']);
-        
+
         //Verifica se a senha está correta
         if(!password_verify($password, $user->password))
             return redirect()->back()->withInput()->with(['loginError' => 'Login ou senha incorreto']);
@@ -52,6 +52,8 @@ class AuthController extends Controller
                             'username'  => $user->username
                            ]
         ]);
+
+        return redirect()->to('/');
     }
 
     public function logout()

@@ -7,7 +7,7 @@
 
                 <!-- logo -->
                 <div class="text-center p-3">
-                    <img src="assets/images/logo.png" alt="Notes logo">
+                    <h1>Notes</h1>
                 </div>
 
                 <!-- form -->
