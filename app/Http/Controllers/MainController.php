@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Note;
 use App\Models\User;
 use App\Services\FuncoesServicos;
 use Illuminate\Http\Request;
@@ -23,13 +24,44 @@ class MainController extends Controller
 
     public function newNoteSubmit(Request $request)
     {
-        echo 'Criando uma nova nota com os dados';
+        $request->validate(
+
+            [
+                'text_title'          => 'required|min:3|max:200',
+                'text_note'           => 'required|min:3|max:3000'
+            ],
+            [
+                'text_title.required' => 'O título é obrigatório.',
+                'text_title.min'      => 'O título deve ter pelo menos :min caracteres.',
+                'text_title.max'      => 'O título deve ter no maximo :max caracteres.',
+
+                'text_note.required'  => 'A nota é obrigatória.',
+                'text_note.min'       => 'A nota deve ter pelo menos :min caracteres.',
+                'text_note.max'       => 'A nota deve ter no maximo :max caracteres.'
+            ]
+
+        );
+
+        $id             = session('user.id');
+
+        $note           = new Note();
+        $note->user_id  = $id;
+        $note->title    = $request->text_title;
+        $note->text     = $request->text_note;
+        $note->save();
+
+        return redirect()->route('home');
     }
 
     public function editNote($id)
     {
-        $id = FuncoesServicos::decryptId($id);
-        echo 'edtando a nota com id: ' . $id;
+        $id   = FuncoesServicos::decryptId($id);
+        $note = Note::find($id);
+        if (!$note)
+            return redirect()->route('home')->with(['error' => 'Nota não encontrada.']);
+        else
+            return view('edit_note', ['note' => $note]);
+
     }
 
     public function deleteNote($id)
