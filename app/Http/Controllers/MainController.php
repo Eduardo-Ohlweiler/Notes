@@ -98,7 +98,18 @@ class MainController extends Controller
 
     public function deleteNote($id)
     {
-        $id = FuncoesServicos::decryptId($id);
-        echo 'deletando a nota com id: ' . $id;
+        $id     = FuncoesServicos::decryptId($id);
+        $note   = Note::find($id);
+
+        return view('delete_note', ['note' => $note]);
+    }
+
+    public function deleteNoteConfirm($id)
+    {
+        $id   = FuncoesServicos::decryptId($id);
+        $note = Note::find($id);
+        $note->delete();
+
+        return redirect()->route('home');
     }
 }
