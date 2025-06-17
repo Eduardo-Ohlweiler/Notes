@@ -48,8 +48,9 @@ class AuthController extends Controller
         $user->save();
 
         //Armazena o usuário na sessão
-        session(['user' => ['id'        => $user->id,
-                            'username'  => $user->username
+        session(['user' => [
+                                'id'        => $user->id,
+                                'username'  => $user->username
                            ]
         ]);
 
